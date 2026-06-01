@@ -38,7 +38,7 @@ public class TaskMain implements IAppLogic {
 
         var triangulator = new Triangulator();
 
-        var triangles = triangulator.Triangulate(List.of(points));
+        var triangles = triangulator.triangulate(List.of(points));
         var newMesh = MeshConverter.ConvertToMesh(triangles);
         Mesh mesh = new Mesh(newMesh.getCoordinates(), newMesh.getColors(), newMesh.getTriangleIndices());
         scene.addMesh("quad", mesh);
