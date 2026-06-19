@@ -1,6 +1,6 @@
 package com.xpromus.tasks.data;
 
-public class Point2D {
+public class Point2D implements Point {
 
     private final double x;
     private final double y;

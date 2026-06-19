@@ -12,4 +12,11 @@ public class Face {
         this.edges = edges;
     }
 
+    public List<Point3D> getPoints() {
+        return points;
+    }
+
+    public List<Edge> getEdges() {
+        return edges;
+    }
 }
