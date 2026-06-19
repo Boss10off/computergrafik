@@ -242,13 +242,13 @@
   ) 
 ]
 
-#slide[
-  = Dispersion
-  #set align(horizon)
+// #slide[
+//   = Dispersion
+//   #set align(horizon)
 
-  //Write chapter for dispersion
-  #link("https://de.wikipedia.org/wiki/Dispersion_(Physik)")[Wikipedia]
-]
+//   //Write chapter for dispersion
+//   #link("https://de.wikipedia.org/wiki/Dispersion_(Physik)")[Wikipedia]
+// ]
 
 #slide[
   = Nicht-ideale Reflexionen / Brechungungen
@@ -392,7 +392,7 @@
   = Diffuses / Stochastisches Raytracing
   #set align(horizon)
 
-  Problem mit Whitted Raytracing: Alles ist unscharf
+  Problem mit Whitted Raytracing:
   - Harte Schatten
   - Perfekte Reflektionen
     - Erfordert perfekte Spiegelungen
@@ -645,13 +645,13 @@
   - Addiert mit direkter Beleuchtung aus diffusem Raytracing
 ]
 
-#slide[
-  = Photon Mapping
-  == Verfahren
-  #set align(horizon)
+// #slide[
+//   = Photon Mapping
+//   == Verfahren
+//   #set align(horizon)
 
-  //TODO: Visualize 
-]
+//   //TODO: Visualize 
+// ]
 
 #slide[
   = Vergleich von Raytracing

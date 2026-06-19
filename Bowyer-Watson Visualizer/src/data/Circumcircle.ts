@@ -1,4 +1,5 @@
-import { Vector3, type Triangle } from "three";
+import { Vector3 } from "three";
+import type { Triangle } from "./Triangle";
 
 export class Circumcircle {
     readonly center: Vector3;
@@ -45,9 +46,9 @@ export class Circumcircle {
     private static calculateCenter(a: Vector3, b: Vector3, c: Vector3): Vector3 {
         const d = Math.abs(
             2 * (
-                ((a.x * (b.y - c.y)) + b.x) * 
-                (c.y - a.y + c.x) *
-                (a.y - b.y)
+                a.x * (b.y - c.y) + 
+                b.x * (c.y - a.y) + 
+                c.x * (a.y - b.y)
             )
         )
 
@@ -58,9 +59,9 @@ export class Circumcircle {
         ) / d;
 
         const uy = (
-            (Math.pow(a.x, 2) + Math.pow(a.y, 2)) * (c.y - b.y) +
-            (Math.pow(b.x, 2) + Math.pow(b.y, 2)) * (a.y - c.y) +
-            (Math.pow(c.x, 2) + Math.pow(c.y, 2)) * (b.y - a.y)
+            (Math.pow(a.x, 2) + Math.pow(a.y, 2)) * (c.x - b.x) +
+            (Math.pow(b.x, 2) + Math.pow(b.y, 2)) * (a.x - c.x) +
+            (Math.pow(c.x, 2) + Math.pow(c.y, 2)) * (b.x - a.x)
         ) / d;
 
         return new Vector3(ux, uy, 0);

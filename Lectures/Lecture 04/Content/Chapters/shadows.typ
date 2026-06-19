@@ -1,3 +1,4 @@
+// LTeX: enable=true language=de-DE
 #import "../../Template/definitions.typ": *
 #import "../../Template/template.typ": *
 
@@ -73,6 +74,18 @@
 
 #slide[
   = Definition
+  == Schattenarten
+  #set align(horizon)
+
+  - *Umbra*: Voller Schatten
+  - *Penumbra*: Halbschatten in einem teilweise schattiertem Bereich
+  - *Antumbra*: Halbschatten, wenn unterschiedliche Penumbra sich treffen
+  - *Hard Shadow*: Schatten (Umbra) mit harten Kanten
+  - *Soft Shadow*: Schatten mit weichen Kanten
+]
+
+#slide[
+  = Definition
   == Lichtquellen & Schattenarten
   #set align(horizon)
   #table(
@@ -118,7 +131,7 @@
   - als Volumina des Raums, die dunkel sind
   - als Orte, die nicht von einer Lichtquelle aus gesehen werden, die auf die Szene blickt
 
-  *Eigenschaften*
+  *Eigenschaften* 
   - wenn die Lichtquellen Punktlichter sind, dann gibt es keinen Halbschatten und die Schatten haben harte Kanten
   - Schatten sind ansichtsunabhängig
   - Sie ändern sich in einer statischen Szene nicht, wenn die Ansicht geändert wird
@@ -162,12 +175,14 @@
 ]
 
 #chapter-title-slide(section-name: [Shadow Maps])
+
 #slide[
   = Modellierung
   == Shadow Mapping
   #set align(horizon)
 
   - Eingeführt von Lance Williams 1978
+  - Überprüfung, ob ein Pixel von einer Lichtquelle sichtbar ist
   *Vorteile* \
     - Kosten weniger empfindlich gegenüber geometrischer Komplexität
     - Können an beliebiger Stelle abgefragt werden
@@ -179,7 +194,41 @@
 ]
 
 #slide[
-  = 1. Pass
+  = Ansatz
+  #set align(horizon)
+
+  - Szene wird von der Lichtquelle aus gerendert
+  - Alles was von der Lichtquelle aus gesehen werden kann ist beleuchtet
+  - Alles was nicht von der Lichtquelle gesehen werden kann ist im Schatten
+
+  #grid(
+    columns: (1fr, 1fr),
+    align: center + horizon,
+    [
+      #box(fill: blue, width: 50pt, height: 15pt) Im Licht
+    ], [
+      #box(fill: black, width: 50pt, height: 15pt) Im Schatten
+    ]
+  )
+
+  #figure(
+    image("../../Images/shadow_mapping/shadow_mapping_rendering_from_light.png", height: 55%)
+  )
+]
+
+#slide[
+  = Ansatz
+  #set align(horizon)
+
+  - Erster Hit des Lichtrays wird mit allen folgenden Hits verglichen
+  - Wenn der neue Punkt weiter entlang des Rays patziert ist, ist der im Schatten
+  - Rays zu ineffizient für real time Rendering
+  - Depth Buffer als bessere Alternative
+]
+
+#slide[
+  = Shadow Map
+  == 1. Pass
   #set align(horizon)
 
   #grid(
@@ -203,16 +252,26 @@
 ]
 
 #slide[
-  = 2. Pass
+  = Shadow Map
+  == 2. Pass
   #set align(horizon)
 
   - Render aus Sicht der Kamera
   - Verwendung der Shadow Map
-    - Umwandlung des Oberflächenpunkts in Lichtkoordinaten
-    - Vergleich der aktuellen Oberflächentiefe mit der gespeicherten Tiefe
+    - Umwandlung des Oberflächenpunkts $P$ in Lichtkoordinaten $P_(L)$
+    - Vergleich der aktuellen Oberflächentiefe am Punkt $P$ mit der gespeicherten Tiefe in der Shadow Map
     - Wenn $T gt T_("gespeichert")$ $arrow$ Pixel ist im Schatten
     - Wenn Tiefe $T eq eq T_("gespeichert")$ gespeicherte Tiefe denn ist der Pixel beleuchtet
     - $T lt T_("gespeichert")$ sollte nie eintreten
+]
+
+#slide[
+  = Shadow Map
+  #set align(horizon)
+
+  #figure(
+    image("../../Images/shadow_mapping/shadow_map_diagram.png")
+  )
 ]
 
 #slide[
@@ -264,7 +323,7 @@
   #set align(horizon)
 
   - Vergrößerung, Verkleinerung und anisotrope Artefakte
-  - Erhöhrung der Auflösung der Shadow Map ist rechenintensiv
+  - Erhöhung der Auflösung der Shadow Map ist rechenintensiv
   - Texturfilterung kann nicht auf standard Shadow Maps angewendet werden
   
   #set align(center)
@@ -332,13 +391,51 @@
 ]
 
 #chapter-title-slide(section-name: [Shadow Volumes])
+
 #slide[
-  = Shadow Volumes
+  = Shadow Volumes & Stencil Shadows
   #set align(horizon)
 
-  - Erzeugen von Raumvolumina im Schatten aus jedem Polygon im Licht
-  - Endliche Schattenvolumina durch Verschneidung mit dem View Volume
-  - Jedes Dreieck erzeugt 3 projezierte Quads
+  - Popularisiert von Doom 3 (2004)
+  - Hauptidee: Erstelle ein Volumen, welches alle Schatten der Szene einschließt
+  - Finden der Silhouetten aller Objekte
+  $arrow$ Kanten finden, bei denen ein Face Richtung Licht zeigt und eins weg vom Licht zeigt
+
+  #figure(
+    image("../../Images/shadow_volumes/shadow_volume_silhouette.png", fit: "contain", width: 50%)
+  )
+]
+
+#slide[
+  = Shadow Volumes & Stencil Shadows
+  #set align(horizon)
+
+  - Vertices, die Richtug Licht zeigen bleiben an ihrer Position
+  - Vertices, die weg vom Licht zeigen werden weit weg extrudiert
+  - Duplizieren und Extrudieren der Silhouetten-Vertices und Verbindung mit den originalen Vertices
+
+  #figure(
+    image("../../Images/shadow_volumes/shadow_volume_extrude.png", fit: "contain", width: 30%)
+  )
+
+  Erstellung von: Light Cap, Dark Cap und Sides
+]
+
+#slide[
+  = Silhouette Edges
+  #set align(horizon)
+
+  - Nur äußere Kanten tragen zur Erstellung des Shadow Volumes bei
+  - Erstellung der Silhouettenkante entfernt nutzlose Polygone
+
+  #figure(
+    image("../../Images/shadow_volumes_polygon_merging.png", width: 90%)
+  )
+]
+
+#slide[
+  = Shadow Volumes & Stencil Shadows
+  #set align(horizon)
 
   *Pros*
   - Hohe Qualität
@@ -358,17 +455,17 @@
   )
 ]
 
-#slide[
-  = Testen eines Punktes
-  #set align(horizon)
+// #slide[
+//   = Testen eines Punktes
+//   #set align(horizon)
 
-  - Zählen aller Shadow Volume Polygone zwischen Objekt und Auge
-  - Wenn: $abs(P_("Front Facing")) gt abs(P_("Back Facing"))$ dann Schatten
+//   - Zählen aller Shadow Volume Polygone zwischen Objekt und Auge
+//   - Wenn: $abs(P_("Front Facing")) gt abs(P_("Back Facing"))$ dann Schatten
 
-  #figure(
-    image("../../Images/shadow_volumes_testing.png", width: 80%)
-  )
-]
+//   #figure(
+//     image("../../Images/shadow_volumes_testing.png", width: 80%)
+//   )
+// ]
 
 #slide[
   = Stencil Buffer
@@ -384,7 +481,7 @@
 ]
 
 #slide[
-  = Stencil Buffer
+  = Shadow Volumes & Stencil Buffer
   == Implementierung
   #set align(horizon)
 
@@ -406,25 +503,13 @@
   )
 ]
 
-#slide[
-  = Merging
-  #set align(horizon)
+// #slide[
+//   = Merging
+//   #set align(horizon)
 
-  Kanten, die von zwei Polygonen geteilt werden, werden aus bei der Form des Shadow Volumes ignoriert
+//   Kanten, die von zwei Polygonen geteilt werden, werden aus bei der Form des Shadow Volumes ignoriert
 
-  #figure(
-    image("../../Images/shadow_volumes_merge.png", width: 90%)
-  )
-]
-
-#slide[
-  = Silhouette Edges
-  #set align(horizon)
-
-  - Nur äußere Kanten tragen zur Erstellung des Shadow Volumes bei
-  - Erstellung der Silhouettenkante entfernt nutzlose Polygone
-
-  #figure(
-    image("../../Images/shadow_volumes_polygon_merging.png", width: 90%)
-  )
-]
+//   #figure(
+//     image("../../Images/shadow_volumes_merge.png", width: 90%)
+//   )
+// ]

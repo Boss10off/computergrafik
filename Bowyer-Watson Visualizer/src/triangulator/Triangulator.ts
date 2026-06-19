@@ -25,7 +25,6 @@ export class Triangulator {
                 triangles.push(newTriangle);
             }
         }
-
         const finalTriangles: Triangle[] = [];
         for (const triangle of triangles) {
             if (
@@ -35,7 +34,6 @@ export class Triangulator {
             ) {
                 continue;
             }
-
             finalTriangles.push(triangle);
         }
 
@@ -80,25 +78,22 @@ export class Triangulator {
         badTriangles: Triangle[]
     ): Edge[] {
         const polygon: Edge[] = [];
-
+        
         for (let index = 0; index < badTriangles.length; index++) {
-            const badTriangle = badTriangles[index];
-            const trianglesToCheck: Triangle[] = badTriangles;
+            const currentBadTriangle = badTriangles[index];
+            const trianglesToCheck: Triangle[] = badTriangles.map(item => item.clone());
             trianglesToCheck.splice(index, 1);
 
-            for (let edgeIndex = 0; edgeIndex < badTriangle.edges.length; edgeIndex++) {
-                const currentEdge = badTriangle.edges[edgeIndex];
-                let sharedEdge = false;
-                for (let checkTriangleIndex = 0; checkTriangleIndex < trianglesToCheck.length; checkTriangleIndex++) {
-                    const triangleToCheck = trianglesToCheck[checkTriangleIndex];
-                    if (triangleToCheck.containsEdge(currentEdge)){
-                        sharedEdge = true;
-                        break;
+            for (const currentEdge of currentBadTriangle.edges) {
+                let edgeIsShared = false;
+                for (const currentTriangleToCheck of trianglesToCheck) {
+                    if (currentTriangleToCheck.containsEdge(currentEdge)) {
+                        edgeIsShared = true;
                     }
                 }
 
-                if (!sharedEdge) {
-                    polygon.push(currentEdge);
+                if (!edgeIsShared) {
+                    polygon.push(currentEdge)
                 }
             }
         }
@@ -129,5 +124,4 @@ export class Triangulator {
 
         return returnList;
     }
-
 }

@@ -405,16 +405,16 @@
   //TODO: Write Motion Blur Chapter
 ]
 
-#slide[
-  = Special Camera FX
-  == Film Grain
-  #set align(horizon)
-  //TODO: Write Film Grain Chapter
-]
+// #slide[
+//   = Special Camera FX
+//   == Film Grain
+//   #set align(horizon)
+//   //TODO: Write Film Grain Chapter
+// ]
 
-#slide[
-  = Special Camera FX
-  == Lens Flare
-  #set align(horizon)
-  //TODO: Write Lens Flare Chapter
-]
+// #slide[
+//   = Special Camera FX
+//   == Lens Flare
+//   #set align(horizon)
+//   //TODO: Write Lens Flare Chapter
+// ]
