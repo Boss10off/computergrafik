@@ -32,7 +32,10 @@
   #set align(horizon)
 
   #showybox(
-    title: [Particle Dreams by Karl Sims (1988)],
+    title: [
+      Particle Dreams by Karl Sims (1988)
+      #link("https://www.youtube.com/watch?v=E3G29zYlfDs&pp=ygUcUGFydGljbGUgRHJlYW1zIGJ5IEthcmwgU2ltcw%3D%3D")[#text(fill: hszg-green.darken(50%))[YouTube $arrow$]]
+    ],
     frame: (
       title-color: hszg-green,
       border-color: hszg-green,
@@ -76,11 +79,15 @@
   #set align(horizon)
 
   - Partikel werden durch Prozesse mit einem Element des Zufalls erzeugt
-  - Eine Möglichkeit, die Anzahl der erzeugten Partikel zu steuern, sind die pro Frame erzeugten Partikel:
+  *1. Möglichkeit die Anzahl der erzeugten Partikel zu steuern:*
+  - Durchschnittlichen Wert pro Frame festlegen
+  - Durch Zufall den Wert abweichen lassen
   $ 
     N "parts"_(f) eq "MeanParts"_(f) plus "Rand"() times "VarianceParts"_(f)  
   $
-  - Eine andere Methode erzeugt eine bestimmte Anzahl von Partikeln pro Bildschirmfläche:
+
+  *2. Möglichkeit die Anzahl der erzeugten Partikel zu steuern:*
+  - Anzahl von Partikeln pro Bildschirmfläche erzeugen:
     - Damit hängt die Anzahl der Partikel von der Bildschirmfläche ab
     - Es ist nicht nötig, tausende Partikel für wenige Pixel Flächen zu erzeugen
   
