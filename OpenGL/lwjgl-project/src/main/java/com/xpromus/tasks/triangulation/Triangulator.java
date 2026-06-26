@@ -15,18 +15,18 @@ public class Triangulator {
      * @param points List of points to be triangulated.
      * @return A list of triangles containing the valid triangulation.
      */
-    public List<Triangle> Triangulate(List<Point2D> points) {
+    public List<Triangle> triangulate(List<Point2D> points) {
         if (points.size() < 3) {
             return new ArrayList<>();
         }
 
-        var superTriangle = CalculateSuperTriangle(points);
+        var superTriangle = calculateSuperTriangle(points);
         ArrayList<Triangle> triangles = new ArrayList<>();
         triangles.add(superTriangle);
 
         for (Point2D point : points) {
-            var badTriangles = FindBadTriangles(point, triangles);
-            var polygon = CreatePolygonFromBadTriangles(badTriangles);
+            var badTriangles = findBadTriangles(point, triangles);
+            var polygon = createPolygonFromBadTriangles(badTriangles);
             triangles.removeIf(badTriangles :: contains);
             for (Edge edge : polygon) {
                 var newTriangle = new Triangle(edge, point);
@@ -56,7 +56,7 @@ public class Triangulator {
      * @param points List of points, that should be enclosed in the triangle.
      * @return An instance of the triangle class containing the super triangle.
      */
-    private Triangle CalculateSuperTriangle(List<Point2D> points) {
+    private Triangle calculateSuperTriangle(List<Point2D> points) {
         var xMin = points.stream().mapToDouble(Point2D::getX).min().getAsDouble();
         var yMin = points.stream().mapToDouble(Point2D::getY).min().getAsDouble();
         var xMax = points.stream().mapToDouble(Point2D::getX).max().getAsDouble();
@@ -77,11 +77,11 @@ public class Triangulator {
      * @param triangles All current triangles, that will be checked.
      * @return All bad triangles, that have been found.
      */
-    private List<Triangle> FindBadTriangles(Point2D point, List<Triangle> triangles) {
+    private List<Triangle> findBadTriangles(Point2D point, List<Triangle> triangles) {
         var badTriangles = new ArrayList<Triangle>();
 
         for (Triangle triangle : triangles) {
-            if (triangle.getCircumcircle().IsPointInCircumcircle(point)) {
+            if (triangle.getCircumcircle().isPointInCircumcircle(point)) {
                 badTriangles.add(triangle);
             }
         }
@@ -94,7 +94,7 @@ public class Triangulator {
      * @param badTriangles Bad triangles that were found.
      * @return The outline of all bad triangles as a list of edges.
      */
-    private List<Edge> CreatePolygonFromBadTriangles(List<Triangle> badTriangles) {
+    private List<Edge> createPolygonFromBadTriangles(List<Triangle> badTriangles) {
         var polygon = new ArrayList<Edge>();
 
         for (Triangle currentTriangle : badTriangles) {

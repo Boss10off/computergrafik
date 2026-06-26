@@ -85,7 +85,7 @@ public class CatmullClarkMain implements IAppLogic {
 
         List<Mesh> meshList = new ArrayList<>();
         CatmullClark catmullClark = new CatmullClark();
-        Mesh mesh = catmullClark.SubdivideMesh(positions, colors, indices);
+        Mesh mesh = catmullClark.subdivideMesh(positions, colors, indices);
         meshList.add(mesh);
 
         var cubeModelId = "cube-model";
