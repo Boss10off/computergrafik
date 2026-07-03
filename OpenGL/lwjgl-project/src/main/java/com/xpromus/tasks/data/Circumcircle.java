@@ -19,7 +19,7 @@ public class Circumcircle {
         radius = calculateRadius(center, a);
     }
 
-    public boolean IsPointInCircumcircle(Point2D point2D) {
+    public boolean isPointInCircumcircle(Point2D point2D) {
         var deltaX = point2D.getX() - center.getX();
         var deltaY = point2D.getY() - center.getY();
         var distance = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);

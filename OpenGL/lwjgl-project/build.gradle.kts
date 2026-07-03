@@ -6,7 +6,7 @@ group = "com.xpromus"
 version = "1.0-SNAPSHOT"
 
 val lwjglVersion = "3.4.1"
-val lwjglNatives = "natives-linux"
+val lwjglNatives = "natives-windows"
 
 repositories {
     mavenCentral()

@@ -41,10 +41,7 @@ public class TaskMain implements IAppLogic {
 
         var triangulator = new Triangulator();
 
-        var triangles = triangulator.Triangulate(List.of(points));
-
-        List<Mesh> meshList = new ArrayList<>();
-
+        var triangles = triangulator.triangulate(List.of(points));
         var newMesh = MeshConverter.ConvertToMesh(triangles);
         Mesh mesh = new Mesh(newMesh.getCoordinates(), newMesh.getColors(), newMesh.getTriangleIndices());
         meshList.add(mesh);
